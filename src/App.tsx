@@ -1,5 +1,13 @@
 import React from 'react';
-import { Code2, Rocket, Zap, ChevronRight, Mail, Phone, Clock } from 'lucide-react';
+import {
+  Code2,
+  Rocket,
+  Zap,
+  ChevronRight,
+  Mail,
+  Phone,
+  Clock,
+} from 'lucide-react';
 
 function App() {
   return (
@@ -9,7 +17,9 @@ function App() {
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Zap className="w-8 h-8 text-blue-600" />
-            <span className="text-2xl font-bold text-gray-900">FlashWeb</span>
+            <span className="text-2xl font-bold text-gray-900">
+              CraftersWeb
+            </span>
           </div>
           <div className="flex items-center space-x-6">
             <a href="#services" className="text-gray-600 hover:text-blue-600">
@@ -126,7 +136,6 @@ function App() {
               <Mail className="w-6 h-6 mr-2" />
               1blogdesimon@gmail.com
             </a>
-
           </div>
         </div>
       </div>
@@ -135,7 +144,7 @@ function App() {
       <footer className="bg-white">
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
           <div className="text-center text-gray-500">
-            <p>© 2024 FlashWeb. Tous droits réservés au blog de simon.</p>
+            <p>© 2024 FlashWeb. Tous droits réservés.</p>
           </div>
         </div>
       </footer>
