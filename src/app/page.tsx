@@ -1,7 +1,8 @@
-import React from 'react';
+'use client';
+
 import { Code2, Rocket, Zap, ChevronRight, Mail, Phone, Clock } from 'lucide-react';
 
-function App() {
+export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* Hero Section */}
@@ -36,7 +37,7 @@ function App() {
             </p>
             <div className="mt-4 flex items-center justify-center text-blue-600">
               <Clock className="w-5 h-5 mr-2" />
-              <span className="font-medium">Livraison dans la semaine </span>
+              <span className="font-medium">Livraison en 48 heures</span>
             </div>
             <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
               <div className="rounded-md shadow">
@@ -99,7 +100,7 @@ function App() {
                 Livraison Rapide
               </h3>
               <p className="mt-2 text-center text-gray-600">
-                Votre site web prêt dans la semaine
+                Votre site web prêt en seulement 48 heures
               </p>
             </div>
           </div>
@@ -126,7 +127,13 @@ function App() {
               <Mail className="w-6 h-6 mr-2" />
               1blogdesimon@gmail.com
             </a>
-
+            <a
+              href="tel:+33123456789"
+              className="flex items-center text-blue-600 hover:text-blue-800"
+            >
+              <Phone className="w-6 h-6 mr-2" />
+              01 23 45 67 89
+            </a>
           </div>
         </div>
       </div>
@@ -142,5 +149,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
