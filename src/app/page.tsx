@@ -1,8 +1,55 @@
 'use client';
 
-import { Code2, Rocket, Zap, ChevronRight, Mail, Phone, Clock } from 'lucide-react';
+import { Code2, Rocket, Zap, Mail, Phone, Clock } from 'lucide-react';
+import { useState, FormEvent } from 'react';
+import emailjs from '@emailjs/browser';
 
 export default function Home() {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    phone: '',
+    email: '',
+    description: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      await emailjs.send(
+        'service_8mfy0my', // Remplacez par votre Service ID
+        'template_i9hqf2e', // Remplacez par votre Template ID
+        {
+          to_email: 'simon.andrian@icloud.com',
+          from_name: `${formData.firstName} ${formData.lastName}`,
+          from_email: formData.email,
+          phone: formData.phone || 'Non fourni',
+          message: formData.description,
+        },
+        'YIINy5zrWE-mZvWTV' // Remplacez par votre Public Key
+      );
+
+      setSubmitStatus('success');
+      setFormData({
+        firstName: '',
+        lastName: '',
+        phone: '',
+        email: '',
+        description: ''
+      });
+    } catch (error) {
+      console.error('Erreur lors de l\'envoi:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* Hero Section */}
@@ -39,16 +86,102 @@ export default function Home() {
               <Clock className="w-5 h-5 mr-2" />
               <span className="font-medium">Livraison en 48 heures</span>
             </div>
-            <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
-              <div className="rounded-md shadow">
-                <a
-                  href="https://simon.c54.ovh"
-                  className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10"
+            
+            {/* Formulaire de contact */}
+            <div className="mt-8 max-w-md mx-auto">
+              <form onSubmit={handleSubmit} className="space-y-6 bg-white p-8 rounded-lg shadow-md">
+                {submitStatus === 'success' && (
+                  <div className="p-4 bg-green-50 text-green-700 rounded-md">
+                    Votre message a été envoyé avec succès !
+                  </div>
+                )}
+                {submitStatus === 'error' && (
+                  <div className="p-4 bg-red-50 text-red-700 rounded-md">
+                    Une erreur est survenue. Veuillez réessayer.
+                  </div>
+                )}
+                
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 text-left">
+                      Prénom *
+                    </label>
+                    <input
+                      type="text"
+                      id="firstName"
+                      required
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                      value={formData.firstName}
+                      onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 text-left">
+                      Nom *
+                    </label>
+                    <input
+                      type="text"
+                      id="lastName"
+                      required
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                      value={formData.lastName}
+                      onChange={(e) => setFormData({...formData, lastName: e.target.value})}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 text-left">
+                    Email *
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    required
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 text-left">
+                    Numéro de téléphone (facultatif)
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="description" className="block text-sm font-medium text-gray-700 text-left">
+                    Description de votre projet *
+                  </label>
+                  <textarea
+                    id="description"
+                    required
+                    rows={4}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    placeholder="Décrivez à quoi vous souhaitez que votre site ressemble..."
+                    value={formData.description}
+                    onChange={(e) => setFormData({...formData, description: e.target.value})}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${
+                    isSubmitting ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+                  } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
                 >
-                  Commencer maintenant
-                  <ChevronRight className="ml-2 w-5 h-5" />
-                </a>
-              </div>
+                  {isSubmitting ? 'Envoi en cours...' : 'Envoyer ma demande'}
+                </button>
+              </form>
             </div>
           </div>
         </div>
